@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Workflow>
+  <ProjectName>Exception_Handling</ProjectName>
+  <Description>Handles exceptions, escalates to human reviewer, sends summary emails, and logs errors in an exception queue.</Description>
+  <MainSequence>
+    <Step name="Check Extraction Confidence" type="CustomValidation">
+      <Properties>
+        <Input>extracted_fields.json</Input>
+        <Threshold>0.8</Threshold>
+        <Output>confidence_score.json</Output>
+      </Properties>
+    </Step>
+    <Step name="Escalate to Human Reviewer" type="UiPath.Mail.Activities.SendMail" condition="confidence_score < Threshold">
+      <Properties>
+        <To>human_reviewer@company.com</To>
+        <Subject>Invoice Exception: Manual Review Needed</Subject>
+        <Body>See attached summary of extraction issues.</Body>
+        <Attachments>extracted_fields.json</Attachments>
+      </Properties>
+    </Step>
+    <Step name="Log Exception" type="UiPath.Excel.Activities.AppendRange">
+      <Properties>
+        <File>exception/ExceptionQueue.xlsx</File>
+        <Sheet>Exceptions</Sheet>
+        <Input>extracted_fields.json</Input>
+      </Properties>
+    </Step>
+    <Step name="Send Summary Email" type="UiPath.Mail.Activities.SendMail">
+      <Properties>
+        <To>process_owner@company.com</To>
+        <Subject>Invoice Exception Summary</Subject>
+        <Body>Summary of issues and actions taken.</Body>
+        <Attachments>exception/ExceptionQueue.xlsx</Attachments>
+      </Properties>
+    </Step>
+  </MainSequence>
+</Workflow>
