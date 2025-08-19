@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Workflow>
+  <ProjectName>ERP_Validation</ProjectName>
+  <Description>Validates extracted invoice data against vendor master, existing invoices, and payment terms in ERP/Excel.</Description>
+  <MainSequence>
+    <Step name="Read Vendor Master" type="UiPath.Excel.Activities.ReadRange">
+      <Properties>
+        <File>validation/VendorMaster.xlsx</File>
+        <Sheet>Vendors</Sheet>
+      </Properties>
+    </Step>
+    <Step name="Read Existing Invoices" type="UiPath.Excel.Activities.ReadRange">
+      <Properties>
+        <File>validation/Invoices.xlsx</File>
+        <Sheet>Invoices</Sheet>
+      </Properties>
+    </Step>
+    <Step name="Read Payment Terms" type="UiPath.Excel.Activities.ReadRange">
+      <Properties>
+        <File>validation/PaymentTerms.xlsx</File>
+        <Sheet>Terms</Sheet>
+      </Properties>
+    </Step>
+    <Step name="Validate Vendor" type="CustomValidation">
+      <Properties>
+        <Input>extracted_fields.json</Input>
+        <Reference>VendorMaster.xlsx</Reference>
+        <Output>vendor_validation.json</Output>
+      </Properties>
+    </Step>
+    <Step name="Check Duplicate Invoice" type="CustomValidation">
+      <Properties>
+        <Input>extracted_fields.json</Input>
+        <Reference>Invoices.xlsx</Reference>
+        <Output>duplicate_check.json</Output>
+      </Properties>
+    </Step>
+    <Step name="Validate Payment Terms" type="CustomValidation">
+      <Properties>
+        <Input>extracted_fields.json</Input>
+        <Reference>PaymentTerms.xlsx</Reference>
+        <Output>payment_terms_check.json</Output>
+      </Properties>
+    </Step>
+    <Step name="Aggregate Validation Results" type="CustomAggregation">
+      <Properties>
+        <Inputs>vendor_validation.json,duplicate_check.json,payment_terms_check.json</Inputs>
+        <Output>validation_results.json</Output>
+      </Properties>
+    </Step>
+  </MainSequence>
+</Workflow>
