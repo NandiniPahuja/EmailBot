@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Workflow>
+  <ProjectName>Intake_MultiChannel</ProjectName>
+  <Description>Captures documents from emails, shared folders (Dropbox/SharePoint), and scanned PDFs (OCR).</Description>
+  <MainSequence>
+    <Step name="Monitor Email Inbox" type="UiPath.Mail.Activities.GetMailMessages">
+      <Properties>
+        <Account>your_email@domain.com</Account>
+        <Folder>Inbox</Folder>
+        <Filter>HasAttachment = true</Filter>
+      </Properties>
+    </Step>
+    <Step name="Download Email Attachments" type="UiPath.Mail.Activities.SaveMailAttachments">
+      <Properties>
+        <SaveTo>intake/email_attachments/</SaveTo>
+      </Properties>
+    </Step>
+    <Step name="Monitor Shared Folder (Dropbox)" type="UiPath.Dropbox.Activities.ListFiles">
+      <Properties>
+        <FolderPath>/Invoices</FolderPath>
+        <SaveTo>intake/dropbox_files/</SaveTo>
+      </Properties>
+    </Step>
+    <Step name="Monitor Shared Folder (SharePoint)" type="UiPath.MicrosoftOffice365.Activities.ListFiles">
+      <Properties>
+        <SiteUrl>https://yourcompany.sharepoint.com/sites/invoices</SiteUrl>
+        <FolderPath>Shared Documents/Invoices</FolderPath>
+        <SaveTo>intake/sharepoint_files/</SaveTo>
+      </Properties>
+    </Step>
+    <Step name="OCR Scanned PDFs" type="UiPath.DocumentUnderstanding.OCR">
+      <Properties>
+        <InputFolder>intake/scanned_pdfs/</InputFolder>
+        <OutputFolder>intake/ocr_output/</OutputFolder>
+        <OCRType>AI Computer Vision</OCRType>
+      </Properties>
+    </Step>
+  </MainSequence>
+</Workflow>
