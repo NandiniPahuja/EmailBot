@@ -1,0 +1,9 @@
+{
+  "name": "EmailBot",
+  "description": "Automates invoice and email processing with multi-channel intake, AI, ERP validation, smart responses, dashboard, and audit.",
+  "main": "Main.xaml",
+  "dependencies": [],
+  "version": "1.0.0",
+  "author": "NandiniPahuja",
+  "plugin": true
+}

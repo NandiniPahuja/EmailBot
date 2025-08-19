@@ -1,0 +1,33 @@
+{
+  "email": {
+    "account": "your_email@domain.com",
+    "server": "smtp.domain.com",
+    "password": "your_password"
+  },
+  "folders": {
+    "email_attachments": "intake/email_attachments/",
+    "dropbox": "intake/dropbox_files/",
+    "sharepoint": "intake/sharepoint_files/",
+    "scanned_pdfs": "intake/scanned_pdfs/",
+    "ocr_output": "intake/ocr_output/"
+  },
+  "api_keys": {
+    "llm": "YOUR_LLM_API_KEY",
+    "dropbox": "YOUR_DROPBOX_API_KEY",
+    "sharepoint": "YOUR_SHAREPOINT_API_KEY"
+  },
+  "erp_files": {
+    "vendor_master": "validation/VendorMaster.xlsx",
+    "invoices": "validation/Invoices.xlsx",
+    "payment_terms": "validation/PaymentTerms.xlsx"
+  },
+  "validation_rules": {
+    "duplicate_threshold": 0.95,
+    "confidence_threshold": 0.8
+  },
+  "features": {
+    "enable_ocr": true,
+    "enable_ai_email": true,
+    "dry_run": false
+  }
+}
