@@ -1,34 +1,45 @@
-# EmailBot Project Documentation
+# Enhanced EmailBot Project Documentation
 
-## Overview
-EmailBot automates invoice and email processing for organizations using UiPath and LLM API. It streamlines inbox monitoring, document classification, field extraction, business rule validation, response generation, and dashboard updates.
+## Features
+1. **Multi-Channel Document Intake**
+   - Email attachments
+   - Shared folders (Dropbox/SharePoint)
+   - Scanned PDFs (OCR via UiPath + AI Computer Vision)
+2. **AI-Powered Document Understanding**
+   - Document classification (Invoice, PO, Quotation, Other)
+   - Key field extraction (Vendor Name, Invoice Number, Amount, Due Date, Tax IDs)
+   - Handles unstructured layouts
+3. **ERP / Database Validation**
+   - Vendor master list validation
+   - Duplicate invoice prevention
+   - Payment terms check
+4. **Smart Email Response Generation**
+   - Acknowledgment for valid invoices
+   - Rejection/correction request for invalid invoices
+   - Dynamic placeholders in emails
+5. **Exception Handling & Escalations**
+   - Escalate to human reviewer if extraction confidence is low
+   - Summary email with issues
+   - Exception queue logging
+6. **Dashboard & Reporting**
+   - Real-time dashboard (UiPath Orchestrator, Power BI, Excel)
+   - Analytics: processed, approved/rejected, turnaround, pending exceptions
+7. **Audit Trail & Compliance**
+   - Action logging (timestamps, user, response)
+   - Optional digital signature/ID
 
-## Modules
-- **UiPath Workflow**: Automates email monitoring, attachment download, and process orchestration.
-- **AI Integration**: Python script for document classification and field extraction using LLM API.
-- **Dashboard Integration**: Python script to update Google Sheets with invoice processing status.
+## Folder Structure
+- `/uipath/EmailBot/Main.xaml` - Main workflow
+- `/uipath/EmailBot/intake/` - Multi-channel intake workflows
+- `/uipath/EmailBot/ai/` - AI/LLM integration scripts
+- `/uipath/EmailBot/validation/` - ERP/database validation workflows/scripts
+- `/uipath/EmailBot/email/` - Smart email response templates/scripts
+- `/uipath/EmailBot/exception/` - Exception handling workflows/scripts
+- `/uipath/EmailBot/dashboard/` - Dashboard/reporting scripts
+- `/uipath/EmailBot/audit/` - Audit trail & compliance logs/scripts
 
-## Setup Instructions
-1. Clone the repository: `git clone https://github.com/NandiniPahuja/EmailBot.git`
-2. Open the UiPath workflow in UiPath Studio (`uipath/EmailBot/Main.xaml`).
-3. Configure email account and ERP/Excel file paths in the workflow.
-4. Set up LLM API credentials in `ai/llm_api_integration.py`.
-5. Set up Google API credentials in `dashboard/dashboard_update.py`.
-6. Install required Python packages:
-   - `pip install requests gspread oauth2client`
-7. Run the workflow and scripts as per your automation needs.
-
-## File Structure
-- `uipath/EmailBot/Main.xaml` - Main UiPath workflow
-- `uipath/EmailBot/ai/llm_api_integration.py` - LLM API integration script
-- `uipath/EmailBot/dashboard/dashboard_update.py` - Dashboard update script
-
-## Customization
-- Modify workflow steps in UiPath Studio for your business rules.
-- Update Python scripts for your LLM API and dashboard requirements.
-
-## License
-MIT
+## Setup & Usage
+- See individual module README files for setup and usage instructions.
 
 ---
-Update this documentation as the project evolves.
+Update this documentation as features are implemented.
