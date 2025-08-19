@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Workflow>
+  <ProjectName>EmailBot</ProjectName>
+  <Description>Automates invoice and email processing: monitors inbox, downloads attachments, classifies documents, extracts fields, validates data, generates responses, and updates dashboard.</Description>
+  <MainSequence>
+    <Step name="Monitor Inbox" type="UiPath.Mail.Activities.GetMailMessages">
+      <Properties>
+        <Account>your_email@domain.com</Account>
+        <Folder>Inbox</Folder>
+        <Filter>HasAttachment = true</Filter>
+      </Properties>
+    </Step>
+    <Step name="Download Attachments" type="UiPath.Mail.Activities.SaveMailAttachments">
+      <Properties>
+        <SaveTo>attachments/</SaveTo>
+      </Properties>
+    </Step>
+    <Step name="Classify Documents" type="InvokeLLMAPI">
+      <Properties>
+        <Input>attachments/*</Input>
+        <Output>classification_results.json</Output>
+      </Properties>
+    </Step>
+    <Step name="Extract Fields" type="InvokeLLMAPI">
+      <Properties>
+        <Input>attachments/*</Input>
+        <Output>extracted_fields.json</Output>
+      </Properties>
+    </Step>
+    <Step name="Validate Data" type="UiPath.Excel.Activities.ReadRange">
+      <Properties>
+        <File>ERP_Master.xlsx</File>
+        <Sheet>Vendors</Sheet>
+      </Properties>
+    </Step>
+    <Step name="Business Rule Check" type="CustomValidation">
+      <Properties>
+        <Input>extracted_fields.json</Input>
+        <Reference>ERP_Master.xlsx</Reference>
+        <Output>validation_results.json</Output>
+      </Properties>
+    </Step>
+    <Step name="Generate Response" type="InvokeLLMAPI">
+      <Properties>
+        <Input>validation_results.json</Input>
+        <Output>email_drafts/</Output>
+      </Properties>
+    </Step>
+    <Step name="Send Email" type="UiPath.Mail.Activities.SendMail">
+      <Properties>
+        <Drafts>email_drafts/*</Drafts>
+      </Properties>
+    </Step>
+    <Step name="Update Dashboard" type="UiPath.GoogleSheets.Activities.AppendRow">
+      <Properties>
+        <Sheet>ProcessingStatus</Sheet>
+        <Input>validation_results.json</Input>
+      </Properties>
+    </Step>
+  </MainSequence>
+</Workflow>
